@@ -1,0 +1,6 @@
+.vagrant
+mob.box
+ubuntu-bionic-18.04-cloudimg-console.log
+Vagrantfile
+www/phpmyadmin
+www/school/class/config.php
