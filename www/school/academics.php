@@ -4,7 +4,7 @@ $school = new School();
 $school->adminLoginStatus();
 include('inc/header.php');
 ?>
-<title>purplestudio.com : Demo School Management System with PHP & MySQL</title>
+<title>purplestudio.com : Academics</title>
 <?php include('include_files.php');?>
 <?php include('inc/container.php');?>
 <div class="container">

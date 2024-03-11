@@ -4,7 +4,7 @@ $school = new School();
 $school->adminLoginStatus();
 include('inc/header.php');
 ?>
-<title>purplestudio.com : Demo School Management System with PHP & MySQL</title>
+<title>purplestudio.com : Attendance Report</title>
 <?php include('include_files.php');?>
 <script src="js/jquery.dataTables.min.js"></script>
 <script src="js/dataTables.bootstrap.min.js"></script>

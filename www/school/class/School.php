@@ -201,21 +201,59 @@ class School extends Dbconfig {
 		);
 		echo json_encode($output);
 	}
-	public function addStudent () {
-		if($_POST["sname"]) {
-			$target_dir = "upload/";
-			$fileName = time().$_FILES["photo"]["name"];
-			$targetFile = $target_dir . basename($fileName);
-			if (move_uploaded_file($_FILES["photo"]["tmp_name"], $targetFile)) {
-				echo "The file $fileName has been uploaded.";
-			} else {
-				echo "Sorry, there was an error uploading your file.";
-			}
-			$insertQuery = "INSERT INTO ".$this->studentTable."(name, email, mobile, gender, current_address, father_name, mother_name, class, section, admission_no, roll_no, academic_year, admission_date, dob, photo)
-				VALUES ('".$_POST["sname"]."', '".$_POST["email"]."', '".$_POST["mobile"]."', '".$_POST["gender"]."', '".$_POST["address"]."', '".$_POST["fname"]."', '".$_POST["mname"]."', '".$_POST["classid"]."', '".$_POST["sectionid"]."', '".$_POST["registerNo"]."', '".$_POST["rollNo"]."', '".$_POST["year"]."', '".$_POST["admission_date"]."', '".$_POST["dob"]."', '".$fileName."')";
-			$userSaved = mysqli_query($this->dbConnect, $insertQuery);
-		}
-	}
+  public function addStudent() {
+    // Check if the sname field is set and not empty
+    if (!empty($_POST["sname"])) {
+        $target_dir = "upload/";
+        // Sanitize the file name to prevent path traversal or other malicious filenames
+        $fileName = time() . basename($_FILES["photo"]["name"]);
+        $targetFile = $target_dir . $fileName;
+
+        // Validate the file upload
+        $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        $fileType = $_FILES['photo']['type'];
+        if (!in_array($fileType, $allowedTypes)) {
+            echo "Only JPG, PNG, and GIF files are allowed.";
+            return; // Stop the execution if the file type is not allowed
+        }
+
+        $maxFileSize = 2 * 1024 * 1024; // 2MB
+        if ($_FILES['photo']['size'] > $maxFileSize) {
+            echo "File size should not exceed 2MB.";
+            return; // Stop the execution if the file size exceeds the limit
+        }
+
+        // Attempt to move the uploaded file to the target directory
+        if (move_uploaded_file($_FILES["photo"]["tmp_name"], $targetFile)) {
+            echo "The file $fileName has been uploaded.";
+        } else {
+            echo "Sorry, there was an error uploading your file.";
+            return; // Stop the execution if the file couldn't be uploaded
+        }
+
+        // Prepare the SQL statement to insert the student data
+        $stmt = $this->dbConnect->prepare("INSERT INTO " . $this->studentTable . " (name, email, mobile, gender, current_address, father_name, mother_name, class, section, admission_no, roll_no, academic_year, admission_date, dob, photo) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+
+        if ($stmt === false) {
+            echo "Error preparing the statement.";
+            return;
+        }
+
+        // Bind the parameters to the prepared statement
+        $stmt->bind_param("sssssssssssssss", $_POST["sname"], $_POST["email"], $_POST["mobile"], $_POST["gender"], $_POST["address"], $_POST["fname"], $_POST["mname"], $_POST["classid"], $_POST["sectionid"], $_POST["registerNo"], $_POST["rollNo"], $_POST["year"], $_POST["admission_date"], $_POST["dob"], $fileName);
+
+        // Execute the prepared statement
+        $userSaved = $stmt->execute();
+        if ($userSaved) {
+            echo "Student added successfully.";
+        } else {
+            echo "An error occurred while saving the student.";
+        }
+    } else {
+        echo "Student name is required.";
+    }
+}
+
 	public function getStudentDetails(){
 		$sqlQuery = "SELECT s.id, s.name, s.photo, s.gender, s.dob, s.mobile, s.email, s.current_address, s.father_name, s.mother_name,s.admission_no, s.roll_no, s.admission_date, s.academic_year, s.class, s.section
 			FROM ".$this->studentTable." as s

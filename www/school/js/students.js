@@ -17,16 +17,16 @@ $(document).ready(function(){
 			},
 		],
 		"pageLength": 10
-	});	
+	});
 
 	$('#addStudent').click(function(){
 		$('#studentModal').modal('show');
-		$('#studentForm')[0].reset();		
+		$('#studentForm')[0].reset();
 		$('.modal-title').html("<i class='fa fa-plus'></i> Student Admission");
 		$('#action').val('addStudent');
 		$('#save').val('Save');
-	});	
-	
+	});
+
 	$(document).on('submit','#studentForm', function(event){
 		event.preventDefault();
 		$('#save').attr('disabled','disabled');		
@@ -36,15 +36,15 @@ $(document).ready(function(){
 			data: new FormData(this),
 			processData: false,
 			contentType: false,
-			success:function(data){				
+			success:function(data){
 				$('#studentForm')[0].reset();
-				$('#studentModal').modal('hide');				
+				$('#studentModal').modal('hide');
 				$('#save').attr('disabled', false);
 				studentData.ajax.reload();
 			}
 		})
-	});	
-	
+	});
+
 	$(document).on('click', '.update', function(){
 		var studentid = $(this).attr("id");
 		var action = 'getStudentDetails';
@@ -73,31 +73,31 @@ $(document).ready(function(){
 				$('#email').val(data.email);
 				$('#address').val(data.current_address);
 				$('#fname').val(data.father_name);
-				$('#mname').val(data.mother_name);				
+				$('#mname').val(data.mother_name);
 				$('.modal-title').html("<i class='fa fa-plus'></i> Edit Student");
 				$('#action').val('updateStudent');
 				$('#save').val('Save');
 			}
 		})
-	});	
-	
+	});
+
 	$(document).on('click', '.delete', function(){
-		var studentid = $(this).attr("id");		
+		var studentid = $(this).attr("id");
 		var action = "deleteStudent";
 		if(confirm("Are you sure you want to delete this Student?")) {
 			$.ajax({
 				url:"action.php",
 				method:"POST",
 				data:{studentid:studentid, action:action},
-				success:function(data) {					
+				success:function(data) {
 					studentData.ajax.reload();
 				}
 			})
 		} else {
 			return false;
 		}
-	});	
-	
-	
-	
+	});
+
+
+
 });

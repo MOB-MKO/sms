@@ -4,7 +4,7 @@ $school = new School();
 $school->adminLoginStatus();
 include('inc/header.php');
 ?>
-<title>purplestudio.com : Demo School Management System with PHP & MySQL</title>
+<title>purplestudio.com : Students</title>
 <?php include('include_files.php');?>
 <script src="js/jquery.dataTables.min.js"></script>
 <script src="js/dataTables.bootstrap.min.js"></script>
@@ -70,16 +70,17 @@ include('inc/header.php');
 						<label for="mname" class="control-label">Academic Year*</label>
 						<select name="year" id="year" class="form-control" required>
 							<option value="">Select Year</option>
-							<option value="2018">2018</option>
 							<option value="2019">2019</option>
 							<option value="2020">2020</option>
 							<option value="2021">2021</option>
 							<option value="2022">2022</option>
+							<option value="2023">2023</option>
+							<option value="2024">2024</option>
 						</select>
 					</div>
 					<div class="form-group">
 						<label for="email" class="control-label">Admission Date</label>
-						<input type="text" class="form-control"  id="admission_date" name="admission_date" placeholder="mm/dd/yyyy">
+						<input type="text" class="form-control"  id="admission_date" name="admission_date" placeholder="Date of Admission">
 					</div>
 					<div class="form-group">
 						<label for="mname" class="control-label">Class*</label>
@@ -121,8 +122,8 @@ include('inc/header.php');
 						<input type="email" class="form-control"  id="email" name="email" placeholder="Email">
 					</div>
 					<div class="form-group">
-						<label for="mobile" class="control-label">Mobile</label>
-						<input type="number" class="form-control" id="mobile" name="mobile" placeholder="Mobile">
+						<label for="mobile" class="control-label">Mobile Number</label>
+						<input type="number" class="form-control" id="mobile" name="mobile" placeholder="Mobile Number">
 					</div>
 					<div class="form-group">
 						<label for="address" class="control-label">Address</label>
